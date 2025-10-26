@@ -2,6 +2,7 @@ SHELL := /bin/bash
 COURSE = 
 
 .PHONY: all clean
+   
 
 all: help
 
@@ -25,3 +26,12 @@ prepare:	## Generate directories structure
 submodule:	## Update submules
 	git submodule update --init --recursive
 	git submodule foreach 'git fetch origin; git checkout $$(git rev-parse --abbrev-ref HEAD); git reset --hard origin/$$(git rev-parse --abbrev-ref HEAD); git submodule update --recursive; git clean -dfx'
+
+all: report.pdf report.docx
+report.pdf: report.tex
+    pdflatex report.tex
+report.docx: report.md
+    pandoc report.md -o report.docx
+clean: 
+    rm -f report.pdf report.docx report.aux report.log  
+
